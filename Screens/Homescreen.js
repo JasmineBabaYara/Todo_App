@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { View, Text, TouchableOpacity, Dimensions, Alert } from "react-native";
 import Carousel from "react-native-snap-carousel";
 import Slider from "@react-native-community/slider";
 import { ScrollView } from "react-native-gesture-handler";
+import TodoContext from "../Context/Context";
+import { useIsFocused } from '@react-navigation/native';
+
 {
   /* importing icons */
 }
@@ -42,9 +45,9 @@ export default function Homescreen({ navigation }) {
   {
     /* todo items array */
   }
-  
 
-  
+
+
 
   const [value, setValue] = useState(0);
   const completeItem = (item) => {
@@ -53,14 +56,19 @@ export default function Homescreen({ navigation }) {
   };
 
   const deleteItem = (item) => {
-    // const tempArr = [...arr];
-    // tempArr.splice(arr.indexOf(item), 1);
-    // setArr(tempArr);
+    const tempArr = [...arr];
+    tempArr.splice(arr.indexOf(item), 1);
+    setArr(tempArr);
   };
 
   const useForceUpdate = () => {
     setValue((value) => value + 1);
   };
+
+  const { arr, setArr } = useContext(TodoContext);
+
+  // re-renders the component when the screen is focused to update the list on the homescreen
+  useIsFocused();
 
   return (
     <View style={styles.homecontainer}>
@@ -95,7 +103,7 @@ export default function Homescreen({ navigation }) {
 
       <Text style={styles.task}>Today's Tasks</Text>
       <ScrollView>
-        {/* {arr.map((item) => {
+        {arr.map((item) => {
           return (
             <TouchableOpacity style={styles.todoitem}>
               <View style={styles.todoitemview}>
@@ -122,7 +130,7 @@ export default function Homescreen({ navigation }) {
               />
             </TouchableOpacity>
           );
-        })} */}
+        })}
       </ScrollView>
       <TouchableOpacity style={styles.addicon}>
         <AntDesign

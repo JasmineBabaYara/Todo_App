@@ -1,33 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useContext} from "react";
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
-import { addItem } from "../Components/utils";
 //importing styles
 import styles from "../Styles/Addtodostyle";
 
 //importing expo icons
 import { Feather, AntDesign } from "expo-vector-icons";
-
+import TodoContext  from "../Context/Context";
 
 
 export default function Addtodo({ navigation }) {
   const [todo, setTodo] = useState("");
 
-  const [arr, setArr] = useState([
-    { todo: "Work on project" },
-    { todo: "Go and visit babe " },
-    { todo: "Check emails" },
-    { todo: "Lunch with babe" },
-    { todo: "Meditation" },
-  ]);
+  const { arr, setArr } = useContext(TodoContext);
 
   const addItem = (todo) => {
     if (!todo) {
       Alert.alert("Please enter an item ", { text: "OK" });
     } else {
-      const newArr = arr.push({ todo: todo})
-      console.log("newArr", newArr)
-      setArr(newArr);
-      console.log("newArr 2", arr)
+      arr.push({ todo: todo})
+      setArr(arr);
     }
   };
 
@@ -61,7 +52,7 @@ export default function Addtodo({ navigation }) {
         <Feather name="flag" size={24} color="grey" />
         <Feather name="moon" size={24} color="grey" />
       </View>
-      <TouchableOpacity onPress={() => {addItem(todo), console.log(arr)}} style={styles.newtask}>
+      <TouchableOpacity onPress={() => addItem(todo)} style={styles.newtask}>
         <Text style={styles.newtasktxt}>New Task </Text>
         <AntDesign
           name="up"
